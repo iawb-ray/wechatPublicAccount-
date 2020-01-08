@@ -12,4 +12,12 @@ import lombok.Setter;
 @Getter
 public class Menu {
     private BasicButton[] button;
+
+    public BasicButton[] getButton() {
+        return button;
+    }
+
+    public void setButton(BasicButton[] button) {
+        this.button = button;
+    }
 }

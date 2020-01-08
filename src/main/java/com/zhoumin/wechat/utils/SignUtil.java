@@ -9,7 +9,7 @@ import java.util.Arrays;
  * @create 2018-07-10 10:50
  */
 public class SignUtil {
-    private static String token = "woshiyigetokenaaa123qqq";
+    private static String token = "oldwang";
 
     /**
      * 校验签名

@@ -17,6 +17,22 @@ public class NewsMessage extends BaseMessage{
      */
     private Integer ArticleCount;
 
+    public Integer getArticleCount() {
+        return ArticleCount;
+    }
+
+    public void setArticleCount(Integer articleCount) {
+        ArticleCount = articleCount;
+    }
+
+    public List<Article> getArticles() {
+        return Articles;
+    }
+
+    public void setArticles(List<Article> articles) {
+        Articles = articles;
+    }
+
     /**
      * 多条图文消息信息，默认第一个item为大图
      */

@@ -40,9 +40,9 @@ public class MessageServiceImpl implements MessageService {
             // 文本消息
             if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_TEXT)) {
                 //这里根据关键字执行相应的逻辑，只有你想不到的，没有做不到的
-                /*if(content.equals("xxx")){
-
-                }*/
+//                if(content.equals("xxx")){
+//
+//                }
                 //自动回复
                 TextMessage text = new TextMessage();
                 text.setContent("霍霍哈嘿" + content);
@@ -58,35 +58,35 @@ public class MessageServiceImpl implements MessageService {
                 // 订阅
                 if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {
                     //文本消息
-                    /*TextMessage text = new TextMessage();
-                    text.setContent("我不管，我最美！！");
+                    TextMessage text = new TextMessage();
+                    text.setContent("王雨佳是大笨蛋！");
                     text.setToUserName(fromUserName);
                     text.setFromUserName(toUserName);
                     text.setCreateTime(new Date().getTime());
                     text.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
-                    respMessage = MessageUtil.textMessageToXml(text);*/
+                    respMessage = MessageUtil.textMessageToXml(text);
 
                     //对图文消息
-                    NewsMessage newmsg=new NewsMessage();
-                    newmsg.setToUserName(fromUserName);
-                    newmsg.setFromUserName(toUserName);
-                    newmsg.setCreateTime(new Date().getTime());
-                    newmsg.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
-                    newmsg.setFuncFlag(0);
-                    List<Article> articleList = new ArrayList<>();
-
-                    Article article = new Article();
-                    article.setTitle("我是一个图文");
-                    article.setDescription("我是描述信息");
-                    article.setPicUrl("https://sfault-avatar.b0.upaiyun.com/110/007/1100070317-5abcb09d42224_huge256");
-                    article.setUrl("https://segmentfault.com/u/panzi_5abcaf30a5e6b");
-                    articleList.add(article);
+//                    NewsMessage newmsg=new NewsMessage();
+//                    newmsg.setToUserName(fromUserName);
+//                    newmsg.setFromUserName(toUserName);
+//                    newmsg.setCreateTime(new Date().getTime());
+//                    newmsg.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
+//                    newmsg.setFuncFlag(0);
+//                    List<Article> articleList = new ArrayList<>();
+//
+//                    Article article = new Article();
+//                    article.setTitle("我是一个图文");
+//                    article.setDescription("我是描述信息");
+//                    article.setPicUrl("https://sfault-avatar.b0.upaiyun.com/110/007/1100070317-5abcb09d42224_huge256");
+//                    article.setUrl("https://segmentfault.com/u/panzi_5abcaf30a5e6b");
+//                    articleList.add(article);
                     // 设置图文消息个数
-                    newmsg.setArticleCount(articleList.size());
+//                    newmsg.setArticleCount(articleList.size());
                     // 设置图文消息包含的图文集合
-                    newmsg.setArticles(articleList);
+//                    newmsg.setArticles(articleList);
                     // 将图文消息对象转换成xml字符串
-                    respMessage = MessageUtil.newsMessageToXml(newmsg);
+//                    respMessage = MessageUtil.newsMessageToXml(newmsg);
 
                 }
                 // TODO 取消订阅后用户再收不到公众号发送的消息，因此不需要回复消息

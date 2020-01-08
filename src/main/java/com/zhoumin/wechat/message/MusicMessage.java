@@ -15,4 +15,11 @@ public class MusicMessage extends BaseMessage {
      */
     private Music Music;
 
+    public com.zhoumin.wechat.message.Music getMusic() {
+        return Music;
+    }
+
+    public void setMusic(com.zhoumin.wechat.message.Music music) {
+        Music = music;
+    }
 }

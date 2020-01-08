@@ -10,6 +10,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import com.zhoumin.wechat.message.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
