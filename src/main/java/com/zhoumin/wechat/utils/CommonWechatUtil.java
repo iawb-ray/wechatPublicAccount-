@@ -1,7 +1,6 @@
 package com.zhoumin.wechat.utils;
 
 import com.zhoumin.wechat.constant.AccessToken;
-import com.zhoumin.wechat.menu.Menu;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
@@ -23,19 +22,20 @@ public class CommonWechatUtil {
     private static Logger log = LoggerFactory.getLogger(CommonWechatUtil.class);
     // 凭证获取（GET）
     public final static String token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
+
     /**
      * 发送https请求
      *
-     * @param requestUrl 请求地址
+     * @param requestUrl    请求地址
      * @param requestMethod 请求方式（GET、POST）
-     * @param outputStr 提交的数据
-     * @return JSONObject(通过JSONObject.get(key)的方式获取json对象的属性值)
+     * @param outputStr     提交的数据
+     * @return JSONObject(通过JSONObject.get ( key)的方式获取json对象的属性值)
      */
     public static JSONObject httpsRequest(String requestUrl, String requestMethod, String outputStr) {
         JSONObject jsonObject = null;
         try {
             // 创建SSLContext对象，并使用我们指定的信任管理器初始化
-            TrustManager[] tm = { new MyX509TrustManager() };
+            TrustManager[] tm = {new MyX509TrustManager()};
             SSLContext sslContext = SSLContext.getInstance("SSL", "SunJSSE");
             sslContext.init(null, tm, new java.security.SecureRandom());
             // 从上述SSLContext对象中得到SSLSocketFactory对象
@@ -78,10 +78,11 @@ public class CommonWechatUtil {
         }
         return jsonObject;
     }
+
     /**
      * 获取接口访问凭证
      *
-     * @param appid 凭证
+     * @param appid     凭证
      * @param appsecret 密钥
      * @return
      */
@@ -103,6 +104,7 @@ public class CommonWechatUtil {
         }
         return token;
     }
+
     /**
      * URL编码（utf-8）
      *
@@ -118,6 +120,7 @@ public class CommonWechatUtil {
         }
         return result;
     }
+
     /**
      * 根据内容类型判断文件扩展名
      *
@@ -140,82 +143,6 @@ public class CommonWechatUtil {
     }
 
 
-
-
-
-    // 菜单创建（POST） 限100（次/天）
-    public static String menu_create_url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN";
-
-    /**
-     * 创建菜单
-     *
-     * @param menu 菜单实例
-     * @param accessToken 有效的access_token
-     * @return 0表示成功，其他值表示失败
-     */
-    public static int createMenu(Menu menu, String accessToken) {
-        int result = 0;
-
-        // 拼装创建菜单的url
-        String url = menu_create_url.replace("ACCESS_TOKEN", accessToken);
-        // 将菜单对象转换成json字符串
-        String jsonMenu = JSONObject.fromObject(menu).toString();
-        // 调用接口创建菜单
-        JSONObject jsonObject = httpsRequest(url, "POST", jsonMenu);
-
-        if (null != jsonObject) {
-            if (0 != jsonObject.getInt("errcode")) {
-                result = jsonObject.getInt("errcode");
-                log.error("创建菜单失败 errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));
-            }
-        }
-
-        return result;
-    }
-
-    public static String menu_get_url = "https://api.weixin.qq.com/cgi-bin/menu/get?access_token=ACCESS_TOKEN";
-    /**
-     * 查询菜单
-     *
-     * @param accessToken 有效的access_token
-     * @return 0表示成功，其他值表示失败
-     */
-    public static JSONObject getMenu(String accessToken) {
-        int result = 0;
-
-        // 拼装创建菜单的url
-        String url = menu_get_url.replace("ACCESS_TOKEN", accessToken);
-        // 将菜单对象转换成json字符串
-//        String jsonMenu = JSONObject.fromObject(menu).toString();
-        // 调用接口创建菜单
-        JSONObject jsonObject = httpsRequest(url, "POST", null);
-
-        return jsonObject;
-    }
-
-    public static String menu_delete_url = "https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=ACCESS_TOKEN";
-    /**
-     * 查询菜单
-     *
-     * @param accessToken 有效的access_token
-     * @return 0表示成功，其他值表示失败
-     */
-    public static int deleteMenu(String accessToken) {
-        int result = 0;
-
-        // 拼装创建菜单的url
-        String url = menu_delete_url.replace("ACCESS_TOKEN", accessToken);
-        // 调用接口创建菜单
-        JSONObject jsonObject = httpsRequest(url, "POST", null);
-
-        if (null != jsonObject) {
-            if (0 != jsonObject.getInt("errcode")) {
-                result = jsonObject.getInt("errcode");
-                log.error("删除菜单失败 errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));
-            }
-        }
-        return result;
-    }
 }
 
 

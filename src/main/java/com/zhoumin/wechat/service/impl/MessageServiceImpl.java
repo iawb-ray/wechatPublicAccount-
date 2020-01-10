@@ -1,12 +1,15 @@
 package com.zhoumin.wechat.service.impl;
 
+import com.zhoumin.wechat.common.MessageLog;
 import com.zhoumin.wechat.message.Article;
 import com.zhoumin.wechat.message.NewsMessage;
 import com.zhoumin.wechat.message.TextMessage;
+import com.zhoumin.wechat.service.MessageLogService;
 import com.zhoumin.wechat.service.MessageService;
 import com.zhoumin.wechat.utils.MessageUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,10 +24,14 @@ import java.util.Map;
  */
 @Service("messageService")
 public class MessageServiceImpl implements MessageService {
+    @Autowired
+    MessageLogService messageLogService;
     private static final Logger LOGGER = LoggerFactory.getLogger(MessageServiceImpl.class);
+
     @Override
     public String newMessageRequest(HttpServletRequest request) {
         String respMessage = null;
+        MessageLog messageLog = new MessageLog();
         try {
             // xml请求解析
             Map<String, String> requestMap = MessageUtil.xmlToMap(request);
@@ -37,6 +44,16 @@ public class MessageServiceImpl implements MessageService {
             // 消息内容
             String content = requestMap.get("Content");
             LOGGER.info("FromUserName is:" + fromUserName + ", ToUserName is:" + toUserName + ", MsgType is:" + msgType);
+            // 消息记录写入数据库
+            messageLog.setFromUserName(fromUserName);
+            messageLog.setToUserName(toUserName);
+            messageLog.setMsgType(msgType);
+            messageLog.setContent(content);
+            if (messageLogService.insertMessageLog(messageLog) < 0) {
+                LOGGER.info("消息记录插入数据库成功");
+            } else {
+                LOGGER.error("消息记录插入数据库失败");
+            }
             // 文本消息
             if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_TEXT)) {
                 //这里根据关键字执行相应的逻辑，只有你想不到的，没有做不到的
@@ -95,21 +112,20 @@ public class MessageServiceImpl implements MessageService {
 
                 }
                 // 自定义菜单点击事件
-                else if (eventType.equals(MessageUtil.EVENT_TYPE_CLICK)) {
-                    String eventKey = requestMap.get("EventKey");// 事件KEY值，与创建自定义菜单时指定的KEY值对应
-                    if (eventKey.equals("return_content")) {
-                        TextMessage text = new TextMessage();
-                        text.setContent("赞赞赞");
-                        text.setToUserName(fromUserName);
-                        text.setFromUserName(toUserName);
-                        text.setCreateTime(new Date().getTime());
-                        text.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
-                        respMessage = MessageUtil.textMessageToXml(text);
-                    }
-                }
+//                else if (eventType.equals(MessageUtil.EVENT_TYPE_CLICK)) {
+//                    String eventKey = requestMap.get("EventKey");// 事件KEY值，与创建自定义菜单时指定的KEY值对应
+//                    if (eventKey.equals("return_content")) {
+//                        TextMessage text = new TextMessage();
+//                        text.setContent("赞赞赞");
+//                        text.setToUserName(fromUserName);
+//                        text.setFromUserName(toUserName);
+//                        text.setCreateTime(new Date().getTime());
+//                        text.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
+//                        respMessage = MessageUtil.textMessageToXml(text);
+//                    }
+//                }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             LOGGER.error("error......");
         }
         return respMessage;
